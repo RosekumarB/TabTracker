@@ -2,16 +2,22 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')  //to provide logs about server hits
+const { sequelize } = require('./models/index')
+const config = require('./config/config')
 
 const app = express()
 app.use(bodyParser.json())
 app.use(morgan('combined'))
 app.use(cors())
 
-app.post('/register',(req,res) => {
-    console.log(req.body.email," has passwrod" , req.body.password);
-    res.send(`your user was registered with username ${req.body.email}`);
-})
 
-app.listen(8082);
+
+require('./routes.js')(app)
+
+
+sequelize.sync({force: false})
+        .then(()=>{
+            app.listen(config.port)
+            console.log('server has started');
+        })
 

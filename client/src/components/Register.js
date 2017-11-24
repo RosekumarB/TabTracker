@@ -7,7 +7,8 @@ export default class Register extends React.Component  {
         super(props);
         this.state = {
             email: "sagar",
-            password: "fkdsajfhk"
+            password: "fkdsajfhk",
+            error: null
         }
         // this.onRegister = this.onRegister.bind(this)
         // this.onEmailChange = this.onEmailChange.bind(this)
@@ -21,6 +22,9 @@ export default class Register extends React.Component  {
             password: this.state.password
         }).then( (response) => {
             console.log(response.data);
+            this.setState( { error : null })
+        }).catch((err)=> {
+            this.setState( { error: err.response.data.error})
         })
     }
 
@@ -58,7 +62,7 @@ export default class Register extends React.Component  {
             >
                 Register 
             </button>
-
+            {this.state.error || <div> {this.state.error} </div> }
             </div>
         )
     }
