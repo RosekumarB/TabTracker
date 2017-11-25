@@ -19,8 +19,10 @@ class SongForm extends React.Component {
                 lyrics:props.song ? props.song.lyrics: "",
                 tab: props.song ? props.song.tab: ""
             },
-            error: null
+            id: this.props.id,
+            error: null ,
         }
+        this.action = this.props.action
         console.log('the state in constructor', this.state.song)
     }
 
@@ -68,7 +70,6 @@ class SongForm extends React.Component {
         const tab = e.target.value 
         const song = this.state.song        
         this.setState(()=> ({ song: {...song, tab }}))
-
     }
 
     validate = () => {               
@@ -85,10 +86,25 @@ class SongForm extends React.Component {
         )
     }
 
-    onSubmitHandler(e) {
-        e.preventDefault()
-        console.log('form was submitted')
-        console.log(this.state.song)
+    updateSong() {
+        const isValid = this.validate()
+        if(isValid) {
+            SongsService.updateSong(this.state.id, this.state.song)
+                        .then((response) => {
+                            console.log("respone received")
+                        })
+                        .catch((e) => {
+                            console.log('error recived')
+                        })
+            this.setState = (()=> { error: null})
+            this.props.handleRouting()
+        } else {
+            console.log('error mate')
+            this.setState(() => ({ error: "input error "}))
+        }        
+    }
+    
+    createSong() {
         const isValid = this.validate()
         if(isValid) {
             SongsService.createSong(this.state.song)
@@ -103,13 +119,19 @@ class SongForm extends React.Component {
         } else {
             console.log('error mate')
             this.setState(() => ({ error: "input error "}))
-        }
+        } 
     }
 
-    checkforchangesfromprops() {
-        this.setState({
-            song: this.props.song
-        })
+    onSubmitHandler(e) {
+        e.preventDefault()
+        console.log('form was submitted')
+        console.log(this.state.song)
+        if(this.action === "UPDATE") {
+            this.updateSong()
+        } else {
+            this.createSong()
+        }
+
     }
 
     render() {

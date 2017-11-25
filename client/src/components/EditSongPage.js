@@ -11,6 +11,11 @@ export default class EditSongPage extends React.Component {
             song: null
         }
         this.counter = 1
+        this.handleRouting = this.handleRouting.bind(this)
+    }
+    
+    handleRouting() {
+        this.props.history.push('/songs')
     }
 
     tick() {
@@ -28,7 +33,7 @@ export default class EditSongPage extends React.Component {
 
     render() {
         if(this.state.song)
-            return <SongForm song = { this.state.song } />
+            return <SongForm song = { this.state.song } action="UPDATE" handleRouting = { this.handleRouting } id = { this.props.match.params.id} />
         else return <div> loading ... </div>
     }
 
