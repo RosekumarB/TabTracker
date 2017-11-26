@@ -12,6 +12,7 @@ app.use(morgan('combined'))
 app.use(cors())
 
 
+require('./passport.js')
 
 require('./routes.js')(app)
 

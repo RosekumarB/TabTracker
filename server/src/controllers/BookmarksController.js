@@ -1,16 +1,28 @@
 const { Bookmark } = require('../models')
-
+const { Song } = require('../models')
+const _ = require('lodash')
 module.exports = {
     index(req, res) {
-        const {songId, userId} = req.query
-        Bookmark.findOne({
+        const {userId} = req.query
+        Bookmark.findAll({
             where: {
-                SongId: songId,
                 UserId: userId
-            }
-        }).then((bookmark)=>{
-            res.send(bookmark)
+            },
+            include: [
+                {
+                    model: Song
+                }
+            ]
+        }).then((bookmarks)=> {
+            bookmarks.map((bookmark) => bookmark.toJSON())  
+            res.send(bookmarks)   
+        }).catch((e) =>{
+            res.status(500).send({
+                error: 'error fetching the index bookmarks'
+            })
         })
+
+
     },
     get(req,res) {
         const {songId, userId} = req.query
