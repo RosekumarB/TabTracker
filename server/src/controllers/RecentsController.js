@@ -3,7 +3,7 @@ const { Song } = require('../models')
 const _ = require('lodash')
 module.exports = {
     index(req, res) {
-        const {userId} = req.query
+        const userId = req.user.id
         Recent.findAll({
             where: {
                 UserId: userId
@@ -26,7 +26,11 @@ module.exports = {
 
     },
     addRecent(req, res) {
-        Recent.create(req.body)
+        const recent = {
+            "SongId": req.body.SongId,
+            "UserId": req.user.id
+        }
+        Recent.create(recent)
                 .then((Recent)=> {
                     console.log('Recent added', Recent)
                     res.send(Recent)

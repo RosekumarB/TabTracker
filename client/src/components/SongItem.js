@@ -15,10 +15,10 @@ class SongItem extends React.Component {
     }
 
     handleBookmark(e) {
+        console.log(this.props.token)
         BookmarksService.post({
             SongId: this.props.song.id,
-            UserId: this.props.userId.id
-        }).then((response)=> {
+        }, this.props.token).then((response)=> {
             const bookmark = response.data
             console.log(' received', bookmark)
             if(bookmark) {
@@ -33,8 +33,7 @@ class SongItem extends React.Component {
     handleUnbookmark(e){
         BookmarksService.delete({
             songId: this.props.song.id,
-            userId: this.props.userId.id
-        }).then((response) =>{
+        }, this.props.token).then((response) =>{
             console.log(response.data)
             this.setState({
                 bookmark: null
@@ -66,8 +65,7 @@ class SongItem extends React.Component {
             console.log('mounting, song id is ', this.props.song.id)
             BookmarksService.get({
                 songId: this.props.song.id,
-                userId: this.props.userId.id
-            }).then((response) => {
+            }, this.props.token).then((response) => {
                 const bookmark = response.data
                 console.log(bookmark,'is response')
                 if(bookmark) {
@@ -76,9 +74,7 @@ class SongItem extends React.Component {
                     })
                 }
             }).catch((err)=>{
-                res.send({
-                    error: "error finding the bookmark asked"
-                })
+               console.log('error finding a bookmark')
             })
         }
     }
@@ -87,7 +83,8 @@ class SongItem extends React.Component {
 
 const mapStateToProps = (state) =>({
     isLoggedIn: state.login.loggedIn,
-    userId: state.user.user
+    userId: state.user.user,
+    token: state.token.token
 })
 
 export default connect(mapStateToProps)(SongItem)

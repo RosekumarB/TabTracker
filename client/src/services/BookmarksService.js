@@ -11,7 +11,6 @@ export default {
     get(params) {
         return Api().get(`bookmark`, {
             params: {
-                userId: params.userId,
                 songId: params.songId
             }
         })
@@ -22,7 +21,6 @@ export default {
     delete(params) {
         return Api().delete('bookmarks', {
             params: {
-                userId: params.userId,
                 songId: params.songId
             }
         })

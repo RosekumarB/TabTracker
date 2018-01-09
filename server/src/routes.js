@@ -14,9 +14,9 @@ module.exports = (app) => {
     app.put('/songs/:id', SongsController.putSong)
     app.get('/bookmarks', isAuthenticated, BookmarksController.index)
     app.get('/bookmark', isAuthenticated, BookmarksController.get)
-    app.post('/bookmarks', isAuthenticated, BookmarksController.addBookmark)
-    app.delete('/bookmarks', isAuthenticated,BookmarksController.deleteBookmark)
+    app.post('/bookmarks',  isAuthenticated, BookmarksController.addBookmark)
+    app.delete('/bookmarks', isAuthenticated, BookmarksController.deleteBookmark)
 
-    app.get('/recents', RecentsController.index)
-    app.post('/recents', RecentsController.addRecent)
+    app.get('/recents', isAuthenticated, RecentsController.index)
+    app.post('/recents', isAuthenticated,RecentsController.addRecent)
 }

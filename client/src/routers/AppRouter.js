@@ -8,7 +8,7 @@ import Login from '../components/Login'
 import Songs from '../components/Songs'
 import CreateSongPage from '../components/CreateSongPage'
 import EditSongPage from '../components/EditSongPage'
-
+import PublicRoute from './PublicRoute'
 export const history = createHistory()
 const AppRouter = () => (
     <Router history = { history } >
@@ -16,8 +16,8 @@ const AppRouter = () => (
             <Header/>
             <Switch>
                 <Route path = "/" component = { Welcome } exact = { true } />
-                <Route path = "/register" component = { Register } />
-                <Route path = "/login" component = { Login } />
+                <PublicRoute path ="/register" component = { Register } />
+                <PublicRoute path = "/login" component = { Login } />
                 <Route path = "/songs" component = { Songs } exact = { true }/>
                 <Route path = "/songs/create" component = { CreateSongPage } />
                 <Route path = "/edit/:id" component = { EditSongPage } exact = { true } /> 

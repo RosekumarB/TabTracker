@@ -3,7 +3,7 @@ const { Song } = require('../models')
 const _ = require('lodash')
 module.exports = {
     index(req, res) {
-        const {userId} = req.query
+        const userId = req.user.id
         Bookmark.findAll({
             where: {
                 UserId: userId
@@ -21,11 +21,10 @@ module.exports = {
                 error: 'error fetching the index bookmarks'
             })
         })
-
-
     },
     get(req,res) {
-        const {songId, userId} = req.query
+        const {songId} = req.query
+        const userId = req.user.id
         console.log(songId, 'was song',userId)
         Bookmark.findOne({
             where: {
@@ -41,7 +40,13 @@ module.exports = {
         })
     },
     addBookmark(req, res) {
-        Bookmark.create(req.body)
+        const UserId = req.user.id
+        const SongId = req.body.SongId
+        const bookmark = {
+            UserId,
+            SongId
+        }
+        Bookmark.create(bookmark)
                 .then((bookmark)=> {
                     console.log('bookmark added', bookmark)
                     res.send(bookmark)
@@ -54,7 +59,8 @@ module.exports = {
                 })
     },
     deleteBookmark(req, res) {
-        const {songId, userId} = req.query
+        const userId = req.user.id
+        const {songId} = req.query
         
         Bookmark.findOne({
             where: {

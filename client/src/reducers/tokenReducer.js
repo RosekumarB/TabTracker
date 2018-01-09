@@ -1,4 +1,4 @@
-const tokenReducerDefaultState = { loggedIn: false }
+const tokenReducerDefaultState = { token: null }
 
 export default (state = tokenReducerDefaultState, action) => {
     switch(action.type) {
